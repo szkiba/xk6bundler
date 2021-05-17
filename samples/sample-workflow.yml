@@ -1,0 +1,31 @@
+name: xk6bundler
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  xk6bundler:
+    name: Bundle xk6 extensions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build
+        id: build
+        uses: szkiba/xk6bundler@v0
+        with:
+          platform: linux/amd64 windows/amd64
+          with: |
+            github.com/szkiba/xk6-prometheus@v0.1.2
+            github.com/szkiba/xk6-jose@v0.1.1
+            github.com/szkiba/xk6-ansible-vault@v0.1.1
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

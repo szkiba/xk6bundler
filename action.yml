@@ -1,0 +1,69 @@
+name: xk6bundler
+description: Bundle k6 with extensions as fast and easily as possible.
+author: Iván Szkiba
+
+branding:
+  icon: gift
+  color: purple
+
+inputs:
+  name:
+    description: Short name of the bundle.
+    required: false
+
+  version:
+    description: Bundle version.
+    required: false
+    default: SNAPSHOT
+
+  with:
+    description: |
+      Add extension in whitespace separated list of 'module[@version][=replacement]' string.
+      Can be used multiple times to add extensions by specifying the Go module name and optionally its version, similar to go get. Module name is required, but specific version and/or local replacement are optional.
+      Replacement path must be absolute.
+    required: false
+
+  platform:
+    description: |
+      Add target platform in whitespace separated list of 'os/arch' strings.
+      Can be used multiple times to add target platform.
+    required: false
+    default: linux/amd64 windows/amd64 darwin/amd64
+
+  output:
+    description: Output file path template.
+    required: false
+    default: "dist/{{.Name}}_{{.Os}}_{{.Arch}}/k6{{.Ext}}"
+
+  archive:
+    description: Archive (.tar.gz) file path template.
+    required: false
+    default: "dist/{{.Name}}_{{.Version}}_{{.Os}}_{{.Arch}}.tar.gz"
+
+  k6_repo:
+    description: |
+      Build using a k6 fork repository.
+      The repo can be a remote repository or local directory path.
+    required: false
+
+  k6_version:
+    description: The core k6 version to build.
+    required: false
+    default: latest
+
+outputs:
+  name:
+    description: Short name of the bundle.
+
+  version:
+    description: Bundle version.
+
+  dockerfile:
+    description: Generated Dockerfile path.
+
+  dockerdir:
+    description: Docker context directory path.
+
+runs:
+  using: docker
+  image: docker://szkiba/xk6bundler:v0
