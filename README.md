@@ -11,6 +11,7 @@ xk6bundler is a CLI tool and [GitHub Action](https://docs.github.com/en/actions)
 - Almost drop-in [xk6](https://github.com/k6io/xk6) replacement
 - Only one GitHub workflow file required to build and publish custom k6 bundle
 
+For a real life example check [k6-crocus](https://github.com/szkiba/k6-crocus) and it's [.github/workflows/xk6bundler.yml](https://github.com/szkiba/k6-crocus/blob/master/.github/workflows/xk6bundler.yml) file
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
