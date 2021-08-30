@@ -8,7 +8,7 @@ xk6bundler is a CLI tool and [GitHub Action](https://docs.github.com/en/actions)
 - Create per platform `.tar.gz` archives for releases
 - Generate `Dockerfile` for Docker build/push
 - Guess reasonable default values
-- Almost drop-in [xk6](https://github.com/k6io/xk6) replacement
+- Almost drop-in [xk6](https://github.com/grafana/xk6) replacement
 - Only one GitHub workflow file required to build and publish custom k6 bundle
 
 For a real life example check [k6-crocus](https://github.com/szkiba/k6-crocus) and it's [.github/workflows/xk6bundler.yml](https://github.com/szkiba/k6-crocus/blob/master/.github/workflows/xk6bundler.yml) file
