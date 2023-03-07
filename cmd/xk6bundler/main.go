@@ -76,7 +76,7 @@ func outGitHubAction(opts *options) error {
 	fmt.Fprintf(os.Stdout, format, "name", opts.Name)
 	fmt.Fprintf(os.Stdout, format, "version", opts.Version)
 
-	v := &vars{
+	data := &vars{
 		Name:    opts.Name,
 		Version: opts.Version,
 		Os:      "linux",
@@ -84,7 +84,7 @@ func outGitHubAction(opts *options) error {
 		Ext:     "",
 	}
 
-	out, err := expandTemplate("output", opts.Output, v)
+	out, err := expandTemplate("output", opts.Output, data)
 	if err != nil {
 		return err
 	}

@@ -28,15 +28,25 @@ linters:
     - complexity
     - format
     - performance
+    - module
+    - comment
+    - import
+    - metalinter
+    - error
   disable:
     - wrapcheck
+    - exhaustivestruct
+    - nonamedreturns
+    # deprecated
+    - structcheck
+    - varcheck
     - scopelint
+    - nosnakecase
     - maligned
     - interfacer
-    - nolintlint
-    - godox
-    - gochecknoglobals
-    - exhaustivestruct
+    - ifshort
+    - golint
+    - deadcode
 
 linters-settings:
   lll:

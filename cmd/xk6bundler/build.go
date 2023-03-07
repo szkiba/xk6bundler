@@ -35,14 +35,14 @@ import (
 	"text/template"
 
 	sprig "github.com/go-task/slim-sprig"
-	"github.com/k6io/xk6"
+	"go.k6.io/xk6"
 )
 
 //go:embed Dockerfile
 var dockerTemplate string
 
 func build(platform xk6.Platform, opts *options) error {
-	v := &vars{
+	data := &vars{
 		Name:    opts.Name,
 		Version: opts.Version,
 		Os:      platform.OS,
@@ -51,25 +51,27 @@ func build(platform xk6.Platform, opts *options) error {
 	}
 
 	if platform.OS == "windows" {
-		v.Ext = ".exe"
+		data.Ext = ".exe"
 	}
 
-	out, err := expandTemplate("output", opts.Output, v)
+	out, err := expandTemplate("output", opts.Output, data)
 	if err != nil {
 		return err
 	}
 
-	archive, err := expandTemplate("archive", opts.Archive, v)
+	archive, err := expandTemplate("archive", opts.Archive, data)
 	if err != nil {
 		return err
 	}
+
+	const dirMode = 0o755
 
 	dir := filepath.Dir(out)
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	if err := os.MkdirAll(dir, dirMode); err != nil {
 		return err
 	}
 
-	builder := xk6.Builder{
+	builder := xk6.Builder{ //nolint:exhaustruct
 		Compile: xk6.Compile{
 			Platform: platform,
 			Cgo:      false,
@@ -103,7 +105,9 @@ func createDockerfile(output string) error {
 
 	name := filepath.Join(dir, "Dockerfile")
 
-	return ioutil.WriteFile(name, []byte(str), 0644) // nolint:gosec
+	const fileMode = 0o644
+
+	return ioutil.WriteFile(name, []byte(str), fileMode)
 }
 
 func createArchive(archive string, output string) error {
@@ -148,7 +152,7 @@ func addToArchive(archive *tar.Writer, path string, optional bool) error {
 
 	name := filepath.Base(path)
 
-	header := &tar.Header{
+	header := &tar.Header{ //nolint:exhaustruct
 		Name:    name,
 		Size:    stat.Size(),
 		Mode:    int64(stat.Mode()),
@@ -176,15 +180,15 @@ type vars struct {
 	Name    string
 }
 
-func expandTemplate(name string, tmpl string, v interface{}) (string, error) {
-	t, err := template.New(name).Funcs(sprig.TxtFuncMap()).Parse(tmpl)
+func expandTemplate(name string, tmplsrc string, data interface{}) (string, error) {
+	tmpl, err := template.New(name).Funcs(sprig.TxtFuncMap()).Parse(tmplsrc)
 	if err != nil {
 		return "", err
 	}
 
 	var buff bytes.Buffer
 
-	if err := t.Execute(&buff, v); err != nil {
+	if err := tmpl.Execute(&buff, data); err != nil {
 		return "", err
 	}
 
