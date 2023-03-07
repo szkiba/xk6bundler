@@ -31,7 +31,7 @@ import (
 	"strings"
 
 	"github.com/jessevdk/go-flags"
-	"github.com/k6io/xk6"
+	"go.k6.io/xk6"
 	"gopkg.in/ini.v1"
 )
 
@@ -222,18 +222,20 @@ func parseWith(opts *options) error {
 func splitWith(arg string) (module, version, replace string, err error) {
 	const versionSplit, replaceSplit = "@", "="
 
-	parts := strings.SplitN(arg, versionSplit, 2)
+	const versionParts, moduleParts = 2, 2
+
+	parts := strings.SplitN(arg, versionSplit, versionParts)
 	module = parts[0]
 
 	if len(parts) == 1 {
-		parts := strings.SplitN(module, replaceSplit, 2)
+		parts := strings.SplitN(module, replaceSplit, moduleParts)
 		if len(parts) > 1 {
 			module = parts[0]
 			replace = parts[1]
 		}
 	} else {
 		version = parts[1]
-		parts := strings.SplitN(version, replaceSplit, 2)
+		parts := strings.SplitN(version, replaceSplit, versionParts)
 		if len(parts) > 1 {
 			version = parts[0]
 			replace = parts[1]
@@ -250,7 +252,9 @@ func splitWith(arg string) (module, version, replace string, err error) {
 func splitPlatform(arg string) (os, arch string, err error) {
 	const platformSplit = "/"
 
-	parts := strings.SplitN(arg, platformSplit, 2)
+	const platformParts = 2
+
+	parts := strings.SplitN(arg, platformSplit, platformParts)
 
 	if len(parts) == 1 {
 		err = fmt.Errorf("%w: %s", ErrInvalidPlatform, arg)
