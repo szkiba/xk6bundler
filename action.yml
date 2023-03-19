@@ -23,6 +23,12 @@ inputs:
       Replacement path must be absolute.
     required: false
 
+  markdown:
+    description: |
+      Extract extension list from markdown code block with new line delimited list of 'module[@version][=replacement]' string.
+      Code block should marked with language 'xk6'.
+    required: false
+
   platform:
     description: |
       Add target platform in whitespace separated list of 'os/arch' strings.
