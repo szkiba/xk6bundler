@@ -31,6 +31,7 @@ import (
 	"strings"
 
 	"github.com/jessevdk/go-flags"
+	"gitlab.com/golang-commonmark/markdown"
 	"go.k6.io/xk6"
 	"gopkg.in/ini.v1"
 )
@@ -51,6 +52,7 @@ type options struct {
 	Name      string   `short:"n" long:"name" value-name:"name" env:"XK6BUNDLER_NAME" description:"Short name of the bundle."`                                                                                                                                                                                                                                                                                                         //nolint:lll
 	Version   string   `short:"v" long:"version" value-name:"version" env:"XK6BUNDLER_VERSION" default:"SNAPSHOT" description:"Bundle version."`                                                                                                                                                                                                                                                                                       //nolint:lll
 	With      []string `short:"w" long:"with" value-name:"extension" env:"XK6BUNDLER_WITH" env-delim:"," description:"Add extension in 'module[@version][=replacement]' format. Can be used multiple times to add extensions by specifying the Go module name and optionally its version, similar to go get. Module name is required, but specific version and/or local replacement are optional. Replacement path must be absolute."` //nolint:lll
+	Markdown  string   `short:"m" long:"markdown" value-name:"markdown" env:"XK6BUNDLER_MARKDOWN" description:"Extract extension list from Markdown code blocks. Code block language should be 'xk6' and contains extension list in format 'module[@version][=replacement]'."`                                                                                                                                                         //nolint:lll
 	Platform  []string `short:"p" long:"platform" value-name:"target" env:"XK6BUNDLER_PLATFORM" default:"linux/amd64" default:"windows/amd64" default:"darwin/amd64" description:"Add target platform in 'os/arch' format. Can be used multiple times to add target platform."`                                                                                                                                                        //nolint:lll
 	Output    string   `short:"o" long:"output" value-name:"path" env:"XK6BUNDLER_OUTPUT" default:"dist/{{.Name}}_{{.Os}}_{{.Arch}}/k6{{.Ext}}" description:"Output file path template."`                                                                                                                                                                                                                                              //nolint:lll
 	Archive   string   `short:"a" long:"archive" value-name:"path" env:"XK6BUNDLER_ARCHIVE" default:"dist/{{.Name}}_{{.Version}}_{{.Os}}_{{.Arch}}.tar.gz" description:"Archive (.tar.gz) file path template."`                                                                                                                                                                                                                        //nolint:lll
@@ -76,6 +78,10 @@ func parseOptions(args []string) (*options, error) {
 
 	if isGitHubAction() {
 		fixGitHubAction(opts)
+	}
+
+	if err := extractMarkdown(opts); err != nil {
+		return nil, err
 	}
 
 	if err := parseWith(opts); err != nil {
@@ -277,6 +283,44 @@ func parsePlatform(opts *options) error {
 		}
 
 		opts.platforms = append(opts.platforms, xk6.Platform{OS: os, Arch: arch, ARM: ""})
+	}
+
+	return nil
+}
+
+func extractMarkdown(opts *options) error {
+	if len(opts.Markdown) == 0 {
+		return nil
+	}
+
+	data, err := os.ReadFile(opts.Markdown)
+	if err != nil {
+		return err
+	}
+
+	md := markdown.New(markdown.XHTMLOutput(true), markdown.Nofollow(true))
+	tokens := md.Parse(data)
+
+	buffer := new(strings.Builder)
+
+	for _, t := range tokens {
+		switch t := t.(type) {
+		case *markdown.Fence:
+			if t.Params == "xk6" {
+				if _, err := buffer.WriteString(t.Content); err != nil {
+					return err
+				}
+
+				if _, err := buffer.WriteRune('\n'); err != nil {
+					return err
+				}
+			}
+		default:
+		}
+	}
+
+	if buffer.Len() > 0 {
+		opts.With = append(opts.With, strings.Fields(buffer.String())...)
 	}
 
 	return nil
