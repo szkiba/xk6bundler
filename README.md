@@ -21,6 +21,7 @@ For a real life example check [k6-crocus](https://github.com/szkiba/k6-crocus) a
   - [name](#name)
   - [version](#version)
   - [with](#with)
+  - [markdown](#markdown)
   - [platform](#platform)
   - [output](#output)
   - [archive](#archive)
@@ -50,6 +51,7 @@ Parameter                   | CLI                     | Environment
 [`name`](#name)             | `-n, --name=name`       | `XK6BUNDLER_NAME`
 [`version`](#version)       | `-v, --version=version` | `XK6BUNDLER_VERSION`
 [`with`](#with)             | `-w, --with=extension`  | `XK6BUNDLER_WITH`
+[`markdown`](#markdown)     | `-m, --markdown=path`   | `XK6BUNDLER_MARKDOWN`
 [`platform`](#platform)     | `-p, --platform=target` | `XK6BUNDLER_PLATFORM`
 [`output`](#output)         | `-o, --output=path`     | `XK6BUNDLER_OUTPUT`
 [`archive`](#archive)       | `-a, --archive=path`    | `XK6BUNDLER_ARCHIVE`
@@ -67,6 +69,10 @@ Bundle version. Optional, if missing then xk6bundler will try to guess from `GIT
 ### with
 
 xk6 extension to add in `module[@version][=replacement]` format. When using CLI, it can be used multiple times to add extensions by specifying the Go module name and optionally its version, similar to go get. Module name is required, but specific version and/or local replacement are optional. Replacement path must be absolute. When using GitHub Action, it can contains whilespace separated list of modules. Optional, if missing then no xk6 extension will be bundled.
+
+### markdown
+
+Extract xk6 extension list from markdown code blocks marked with language `xk6`. Multiple `xk6` code blocks will merge to single extension list. Each line in code block contains extension in `module[@version][=replacement]` format (see [with](#with)).
 
 ### platform
 
