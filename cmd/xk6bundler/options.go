@@ -132,7 +132,7 @@ func prepareGitHubAction(group *flags.Group) {
 
 	if ref := os.Getenv("GITHUB_REF"); ref != "" {
 		const fields = 3
-		if parts := strings.SplitN(ref, "/", fields); len(parts) == fields {
+		if parts := strings.Split(ref, "/"); len(parts) == fields && parts[1] == "tags" {
 			os.Setenv("INPUT_VERSION", parts[fields-1])
 		}
 	}
