@@ -72,4 +72,4 @@ outputs:
 
 runs:
   using: docker
-  image: docker://szkiba/xk6bundler:v0.1.5
+  image: docker://szkiba/xk6bundler:v0
