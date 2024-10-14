@@ -45,9 +45,11 @@ jobs:
           fetch-depth: 0
 
       - name: Lint Go Code
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.50.1
+          version: v1.57.2
+          args: --timeout=30m
+          install-mode: binary
 
       - name: Run Unit tests.
         run: go test ./...
