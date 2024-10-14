@@ -1,6 +1,6 @@
 module github.com/szkiba/xk6bundler
 
-go 1.18
+go 1.22
 
 require (
 	github.com/go-task/slim-sprig v2.20.0+incompatible
