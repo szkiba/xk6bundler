@@ -29,7 +29,6 @@ import (
 	"context"
 	_ "embed"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -107,7 +106,7 @@ func createDockerfile(output string) error {
 
 	const fileMode = 0o644
 
-	return ioutil.WriteFile(name, []byte(str), fileMode)
+	return os.WriteFile(name, []byte(str), fileMode)
 }
 
 func createArchive(archive string, output string) error {

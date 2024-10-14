@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+project_name: xk6bundler
+version: 2
+
 before:
   hooks:
     - go mod download

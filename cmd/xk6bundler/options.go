@@ -242,6 +242,7 @@ func splitWith(arg string) (module, version, replace string, err error) {
 	} else {
 		version = parts[1]
 		parts := strings.SplitN(version, replaceSplit, versionParts)
+
 		if len(parts) > 1 {
 			version = parts[0]
 			replace = parts[1]
