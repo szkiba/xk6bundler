@@ -47,6 +47,8 @@ linters:
     - ifshort
     - golint
     - deadcode
+    - depguard
+    - tagalign
 
 linters-settings:
   lll:
