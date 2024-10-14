@@ -41,8 +41,8 @@ gitlab.com/golang-commonmark/puny v0.0.0-20191124015043-9f83538fa04f h1:Wku8eEde
 gitlab.com/golang-commonmark/puny v0.0.0-20191124015043-9f83538fa04f/go.mod h1:Tiuhl+njh/JIg0uS/sOJVYi0x2HEa5rc1OAaVsb5tAs=
 gitlab.com/opennota/wd v0.0.0-20180912061657-c5d65f63c638 h1:uPZaMiz6Sz0PZs3IZJWpU5qHKGNy///1pacZC9txiUI=
 gitlab.com/opennota/wd v0.0.0-20180912061657-c5d65f63c638/go.mod h1:EGRJaqe2eO9XGmFtQCvV3Lm9NLico3UhFwUpCG/+mVU=
-go.k6.io/xk6 v0.9.0 h1:6ihaW4Qsi+Lh3FB6PWwg6Qq+Z6uf4wnkib90smsMTGs=
-go.k6.io/xk6 v0.9.0/go.mod h1:4+BwjriwZ52roJ9RHHQhTBb9Q6ZctEUtsCO10H8rJIo=
+go.k6.io/xk6 v0.13.0 h1:DY6xgBdf1BFwyDVPuFgJTYVaXc9KMuC9ioCKBi1HZVg=
+go.k6.io/xk6 v0.13.0/go.mod h1:4+BwjriwZ52roJ9RHHQhTBb9Q6ZctEUtsCO10H8rJIo=
 golang.org/x/crypto v0.7.0 h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A=
 golang.org/x/crypto v0.7.0/go.mod h1:pYwdfH91IfpZVANVyUOhSIPZaFoJGxTFbZhFTx+dXZU=
 golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=

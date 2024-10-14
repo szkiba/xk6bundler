@@ -6,7 +6,7 @@ require (
 	github.com/go-task/slim-sprig v2.20.0+incompatible
 	github.com/jessevdk/go-flags v1.5.0
 	gitlab.com/golang-commonmark/markdown v0.0.0-20211110145824-bf3e522c626a
-	go.k6.io/xk6 v0.9.0
+	go.k6.io/xk6 v0.13.0
 	gopkg.in/ini.v1 v1.67.0
 )
 
